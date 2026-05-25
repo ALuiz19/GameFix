@@ -9,6 +9,7 @@ function enviarOrcamento(req, res) {
   const c = dbGet('SELECT * FROM chamados WHERE id = ?', [req.params.id]);
   if (!c) return res.status(404).json({ erro: 'Chamado não encontrado.' });
   if (c.status !== 'aceito') return res.status(409).json({ erro: 'Chamado não está com status "aceito".' });
+  if (req.user && c.tecnico_id && c.tecnico_id !== req.user.id) return res.status(403).json({ erro: 'Acesso negado para este chamado.' });
   const id = uuidv4();
   dbRun('INSERT INTO orcamentos (id, chamado_id, valor, descricao) VALUES (?,?,?,?)',
     [id, req.params.id, Number(valor), descricao||null]);
@@ -20,6 +21,10 @@ function enviarOrcamento(req, res) {
 function buscarOrcamento(req, res) {
   const o = dbGet('SELECT * FROM orcamentos WHERE chamado_id = ? ORDER BY criado_em DESC', [req.params.id]);
   if (!o) return res.status(404).json({ erro: 'Orçamento não encontrado.' });
+  if (req.user && req.user.tipo === 'cliente') {
+    const c = dbGet('SELECT * FROM chamados WHERE id = ?', [req.params.id]);
+    if (!c || c.cliente_id !== req.user.id) return res.status(403).json({ erro: 'Acesso negado para este orçamento.' });
+  }
   return res.json(o);
 }
 
@@ -30,6 +35,7 @@ function responderOrcamento(req, res) {
   const c = dbGet('SELECT * FROM chamados WHERE id = ?', [req.params.id]);
   if (!c) return res.status(404).json({ erro: 'Chamado não encontrado.' });
   if (c.status !== 'aguardando_aprovacao') return res.status(409).json({ erro: 'Chamado não aguarda aprovação.' });
+  if (req.user && c.cliente_id !== req.user.id) return res.status(403).json({ erro: 'Acesso negado para este chamado.' });
   const o = dbGet('SELECT * FROM orcamentos WHERE chamado_id = ? ORDER BY criado_em DESC', [req.params.id]);
   if (!o) return res.status(404).json({ erro: 'Orçamento não encontrado.' });
   dbRun('UPDATE orcamentos SET status = ? WHERE id = ?', [decisao, o.id]);

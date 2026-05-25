@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get('/health', (req, res) => res.json({ status: 'ok', servico: 'GameFix API', versao: '1.0.0' }));
+app.get('/health', (req, res) => res.json({ status: 'ok', servico: 'GameFix API', versao: '2.0.0' }));
 app.use('/api', routes);
 app.use(errorHandler);
 

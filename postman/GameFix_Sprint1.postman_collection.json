@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "GameFix - Sprint 1",
-    "description": "Colecao para validar backend REST da Sprint 1 (usuarios, chamados, orcamentos e eventos).",
+    "name": "GameFix - Sprint 2",
+    "description": "Colecao para validar backend REST da Sprint 2 (autenticacao, usuarios, chamados, orcamentos, eventos e RabbitMQ).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_postman_id": "2e0a5889-9f65-4aaf-a17e-bf4f431cc9f0"
   },
@@ -16,6 +16,14 @@
     },
     {
       "key": "tecnicoId",
+      "value": ""
+    },
+    {
+      "key": "clienteToken",
+      "value": ""
+    },
+    {
+      "key": "tecnicoToken",
       "value": ""
     },
     {
@@ -85,7 +93,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nome\": \"Cliente Sprint 1\",\n  \"email\": \"cliente.sprint1@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\"\n}"
+          "raw": "{\n  \"nome\": \"Cliente Sprint 2\",\n  \"email\": \"cliente.sprint2@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\",\n  \"senha\": \"cliente123\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/usuarios",
@@ -124,7 +132,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nome\": \"Cliente Sprint 1\",\n  \"email\": \"cliente.sprint1@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\"\n}"
+              "raw": "{\n  \"nome\": \"Cliente Sprint 2\",\n  \"email\": \"cliente.sprint2@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\",\n  \"senha\": \"cliente123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/usuarios",
@@ -147,7 +155,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n  \"nome\": \"Cliente Sprint 1\",\n  \"email\": \"cliente.sprint1@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\",\n  \"criado_em\": \"2026-05-10 21:00:00\"\n}"
+          "body": "{\n  \"id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n  \"nome\": \"Cliente Sprint 2\",\n  \"email\": \"cliente.sprint2@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\",\n  \"criado_em\": \"2026-05-10 21:00:00\"\n}"
         },
         {
           "name": "Not Found (404)",
@@ -192,7 +200,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nome\": \"Tecnico Sprint 1\",\n  \"email\": \"tecnico.sprint1@example.com\",\n  \"telefone\": \"31999990002\",\n  \"tipo\": \"tecnico\"\n}"
+          "raw": "{\n  \"nome\": \"Tecnico Sprint 2\",\n  \"email\": \"tecnico.sprint2@example.com\",\n  \"telefone\": \"31999990002\",\n  \"tipo\": \"tecnico\",\n  \"senha\": \"tecnico123\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/usuarios",
@@ -231,7 +239,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nome\": \"Tecnico Sprint 1\",\n  \"email\": \"tecnico.sprint1@example.com\",\n  \"telefone\": \"31999990002\",\n  \"tipo\": \"tecnico\"\n}"
+              "raw": "{\n  \"nome\": \"Tecnico Sprint 2\",\n  \"email\": \"tecnico.sprint2@example.com\",\n  \"telefone\": \"31999990002\",\n  \"tipo\": \"tecnico\",\n  \"senha\": \"tecnico123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/usuarios",
@@ -254,15 +262,123 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"id\": \"c0ec31f5-e05b-4bcf-b5f9-2f9d4b2f2af6\",\n  \"nome\": \"Tecnico Sprint 1\",\n  \"email\": \"tecnico.sprint1@example.com\",\n  \"telefone\": \"31999990002\",\n  \"tipo\": \"tecnico\",\n  \"criado_em\": \"2026-05-10 21:00:10\"\n}"
+          "body": "{\n  \"id\": \"c0ec31f5-e05b-4bcf-b5f9-2f9d4b2f2af6\",\n  \"nome\": \"Tecnico Sprint 2\",\n  \"email\": \"tecnico.sprint2@example.com\",\n  \"telefone\": \"31999990002\",\n  \"tipo\": \"tecnico\",\n  \"criado_em\": \"2026-05-10 21:00:10\"\n}"
         }
       ]
+    },
+    {
+      "name": "Login Cliente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"cliente.sprint2@example.com\",\n  \"senha\": \"cliente123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.collectionVariables.set('clienteToken', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login Tecnico",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"tecnico.sprint2@example.com\",\n  \"senha\": \"tecnico123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.collectionVariables.set('tecnicoToken', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Meu Perfil",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "me"
+          ]
+        }
+      }
     },
     {
       "name": "Listar Usuarios",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/usuarios",
           "host": [
@@ -301,7 +417,7 @@
             }
           ],
           "cookie": [],
-          "body": "[\n  {\n    \"id\": \"c0ec31f5-e05b-4bcf-b5f9-2f9d4b2f2af6\",\n    \"nome\": \"Tecnico Sprint 1\",\n    \"email\": \"tecnico.sprint1@example.com\",\n    \"telefone\": \"31999990002\",\n    \"tipo\": \"tecnico\",\n    \"criado_em\": \"2026-05-10 21:00:10\"\n  },\n  {\n    \"id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n    \"nome\": \"Cliente Sprint 1\",\n    \"email\": \"cliente.sprint1@example.com\",\n    \"telefone\": \"31999990001\",\n    \"tipo\": \"cliente\",\n    \"criado_em\": \"2026-05-10 21:00:00\"\n  }\n]"
+          "body": "[\n  {\n    \"id\": \"c0ec31f5-e05b-4bcf-b5f9-2f9d4b2f2af6\",\n    \"nome\": \"Tecnico Sprint 2\",\n    \"email\": \"tecnico.sprint2@example.com\",\n    \"telefone\": \"31999990002\",\n    \"tipo\": \"tecnico\",\n    \"criado_em\": \"2026-05-10 21:00:10\"\n  },\n  {\n    \"id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n    \"nome\": \"Cliente Sprint 2\",\n    \"email\": \"cliente.sprint2@example.com\",\n    \"telefone\": \"31999990001\",\n    \"tipo\": \"cliente\",\n    \"criado_em\": \"2026-05-10 21:00:00\"\n  }\n]"
         }
       ]
     },
@@ -309,7 +425,12 @@
       "name": "Buscar Usuario por ID (Cliente)",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/usuarios/{{clienteId}}",
           "host": [
@@ -350,7 +471,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n  \"nome\": \"Cliente Sprint 1\",\n  \"email\": \"cliente.sprint1@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\",\n  \"criado_em\": \"2026-05-10 21:00:00\"\n}"
+          "body": "{\n  \"id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n  \"nome\": \"Cliente Sprint 2\",\n  \"email\": \"cliente.sprint2@example.com\",\n  \"telefone\": \"31999990001\",\n  \"tipo\": \"cliente\",\n  \"criado_em\": \"2026-05-10 21:00:00\"\n}"
         }
       ]
     },
@@ -362,6 +483,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{clienteToken}}"
           }
         ],
         "body": {
@@ -473,7 +598,12 @@
       "name": "Listar Chamados",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/chamados",
           "host": [
@@ -520,7 +650,12 @@
       "name": "Buscar Chamado por ID",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}",
           "host": [
@@ -602,6 +737,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
           }
         ],
         "body": {
@@ -710,6 +849,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
           }
         ],
         "body": {
@@ -814,7 +957,12 @@
       "name": "Buscar Orcamento do Chamado",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{clienteToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}/orcamento",
           "host": [
@@ -899,6 +1047,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{clienteToken}}"
           }
         ],
         "body": {
@@ -1010,6 +1162,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
           }
         ],
         "body": {
@@ -1118,6 +1274,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{clienteToken}}"
           }
         ],
         "body": {
@@ -1233,6 +1393,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
           }
         ],
         "body": {
@@ -1290,7 +1454,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"id\": \"1ca0492b-5d41-4df0-ad15-f38b49be84f3\",\n  \"cliente_id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n  \"aparelho\": \"Nintendo Switch\",\n  \"modelo\": \"HAC-001\",\n  \"descricao_defeito\": \"Nao carrega bateria\",\n  \"status\": \"recusado_tecnico\",\n  \"tecnico_id\": null,\n  \"criado_em\": \"2026-05-10 21:04:00\",\n  \"atualizado_em\": \"2026-05-10 21:04:20\"\n}"
+          "body": "{\n  \"id\": \"1ca0492b-5d41-4df0-ad15-f38b49be84f3\",\n  \"cliente_id\": \"6f9ab7dc-6e0f-4b3a-8c28-6d2e8f69f4c1\",\n  \"aparelho\": \"Nintendo Switch\",\n  \"modelo\": \"HAC-001\",\n  \"descricao_defeito\": \"Nao carrega bateria\",\n  \"status\": \"aberto\",\n  \"tecnico_id\": null,\n  \"criado_em\": \"2026-05-10 21:04:00\",\n  \"atualizado_em\": \"2026-05-10 21:04:20\"\n}"
         },
         {
           "name": "Not Found (404)",
@@ -1337,7 +1501,12 @@
       "name": "Listar Eventos (Todos)",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/eventos",
           "host": [
@@ -1384,7 +1553,12 @@
       "name": "Listar Eventos por Chamado",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tecnicoToken}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/eventos?chamado_id={{chamadoId}}",
           "host": [

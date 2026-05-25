@@ -41,6 +41,7 @@ Thumbs.db
 .idea/
 
 # SQLite database files (generated locally)
+*.db
 db/*.db
 db/*.db-journal
 db/*.sqlite
